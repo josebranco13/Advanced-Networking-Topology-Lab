@@ -1,0 +1,14 @@
+# Local AI-tool settings and credentials
+.claude/
+
+# GNS3 runtime files
+*.gns3_bak
+project/project-files/dynamips/*/c7200_*
+project/project-files/dynamips/*/*.lock
+project/project-files/dynamips/dynamips_*_stdout.txt
+project/project-files/dynamips/ilt_*
+project/project-files/vpcs/*.log
+project/project-files/**/tmp/
+
+# Portable archive embeds a proprietary Cisco IOS image
+advanced-network.gns3project
