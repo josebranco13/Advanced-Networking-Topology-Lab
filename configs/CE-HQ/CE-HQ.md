@@ -1,66 +1,66 @@
-# Documentação de Configuração - Roteador CE-HQ
+# Configuration Documentation - Router CE-HQ
 
-**Dispositivo:** CE-HQ  
-**Versão do IOS:** Cisco IOS 15.2  
-**Data da Última Alteração:** 16 de Setembro de 2026, 02:32:48 UTC  
-**Função na Rede:** Customer Edge (CE) - Headquarter  
-**Sistema Autónomo do Cliente (AS):** 65010  
-
----
-
-## 1. Resumo Executivo e Arquitetura
-
-O roteador **CE-HQ** atua como equipamento **Customer Edge (CE)** para a sede principal (Headquarter - "HQ"). As suas principais funções incluem:
-
-1. **Gateway da Rede Local (LAN HQ):** Provê o gateway padrão (`192.168.10.1/24`) para os equipamentos da LAN da sede (ex.: `PC-HQ`).
-2. **Conectividade Exterior eBGP:** Estabelece sessão eBGP com o roteador de borda do provedor (**R1**, AS 2121) no enlace de WAN `192.168.100.0/30`.
-3. **Anúncio de Prefixo Local:** Anuncia a sub-rede interna da sede (`192.168.10.0/24`) para o BGP do provedor através da sua AS privada (`65010`).
+**Device:** CE-HQ  
+**IOS Version:** Cisco IOS 15.2  
+**Last Configuration Change:** Wed Sep 16 2026, 02:32:48 UTC  
+**Network Role:** Customer Edge (CE) - Headquarter  
+**Customer Autonomous System (AS):** 65010  
 
 ---
 
-## 2. Tabela de Interfaces e Endereçamento
+## 1. Executive Summary & Architecture
 
-| Interface | Descrição | Endereço IPv4 | Endereço IPv6 | Função / Protocolo | Estado |
+Router **CE-HQ** acts as the **Customer Edge (CE)** device for the headquarters site (HQ):
+
+1. **HQ LAN Gateway:** Acts as the local default gateway (`192.168.10.1/24`) for headquarters workstations and servers (e.g., `PC-HQ`).
+2. **eBGP External Peering:** Establishes eBGP session with provider edge router **R1** (AS 2121) across WAN link `192.168.100.0/30`.
+3. **Local Prefix Advertisement:** Injects the HQ local subnet (`192.168.10.0/24`) into the provider's BGP network using private AS `65010`.
+
+---
+
+## 2. Interface and Addressing Table
+
+| Interface | Description | IPv4 Address | IPv6 Address | Function / Protocol | State |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **FastEthernet0/0** | Link para R1 | `192.168.100.2/30` | N/A | Uplink WAN / eBGP Peering | Ativa (Half-Duplex) |
-| **FastEthernet1/0** | Link para PC-HQ | `192.168.10.1/24` | N/A | Gateway LAN HQ | Ativa |
-| **FastEthernet1/1** | N/A | Sem endereço | N/A | Nenhum | Desativada (`shutdown`) |
-| **FastEthernet2/0** | N/A | Sem endereço | N/A | Nenhum | Desativada (`shutdown`) |
-| **FastEthernet2/1** | N/A | Sem endereço | N/A | Nenhum | Desativada (`shutdown`) |
+| **FastEthernet0/0** | Link to R1 | `192.168.100.2/30` | N/A | WAN Uplink / eBGP Peering | Active (Half-Duplex) |
+| **FastEthernet1/0** | Link to PC-HQ | `192.168.10.1/24` | N/A | LAN Gateway (HQ Site) | Active |
+| **FastEthernet1/1** | N/A | Unassigned | N/A | None | Disabled (`shutdown`) |
+| **FastEthernet2/0** | N/A | Unassigned | N/A | None | Disabled (`shutdown`) |
+| **FastEthernet2/1** | N/A | Unassigned | N/A | None | Disabled (`shutdown`) |
 
 ---
 
-## 3. Configuração BGP (AS 65010)
+## 3. BGP Configuration (AS 65010)
 
-- **Processo BGP:** `65010` (AS Privado)
+- **BGP Process:** `65010` (Private AS)
 - **Router ID:** `192.168.100.2`
 
-### 3.1. Peering Exterior (eBGP) com R1 (AS 2121)
+### 3.1. External Peering (eBGP) with R1 (AS 2121)
 
-| Vizinho | Endereço IP | AS Remoto | Família | Estado / Ativação |
+| Neighbor | IP Address | Remote AS | Address Family | Status |
 | :--- | :--- | :--- | :--- | :--- |
-| **R1 (IPv4)** | `192.168.100.1` | 2121 | IPv4 Unicast | Ativo |
+| **R1 (IPv4)** | `192.168.100.1` | 2121 | IPv4 Unicast | Active |
 
-### 3.2. Redes Anunciadas pelo AS 65010
-O roteador injeta o prefixo da sua LAN local na tabela BGP:
-- **IPv4 Network:** `192.168.10.0` (Class C / `/24`)
-
----
-
-## 4. Serviços de Infraestrutura e Gestão
-
-- **Cisco Express Forwarding (CEF):** Ativado para IPv4 (`ip cef`) e IPv6 (`ipv6 cef`).
-- **Roteamento Unicast IPv6:** Ativado a nível global (`ipv6 unicast-routing`).
-- **Resolução de Nomes:** Desativada (`no ip domain lookup`).
-- **Serviços Web:** Servidores HTTP e HTTPS desativados (`no ip http server`, `no ip http secure-server`).
-- **Linhas de Gestão e Acesso:**
-  - `line con 0`, `line aux 0`, `line vty 0 4`: Configurados com `exec-timeout 0 0`, privilégio nível 15 e `logging synchronous`.
+### 3.2. Advertised Prefixes
+- **IPv4 Network:** `192.168.10.0` (`/24`)
 
 ---
 
-## 5. Configuração Original (Cisco IOS)
+## 4. Infrastructure Services & Management
+
+- **CEF:** Enabled for IPv4 (`ip cef`) and IPv6 (`ipv6 cef`).
+- **IPv6 Unicast Routing:** Enabled (`ipv6 unicast-routing`).
+- **Management & Security:** Disabled DNS lookup, HTTP/HTTPS servers deactivated, exec-timeout 0, level 15 privilege on Console/Aux/VTY.
+
+---
+
+## 5. Original Configuration (Cisco IOS)
 
 ```cisco
+!
+!
+
+!
 ! Last configuration change at 02:32:48 UTC Wed Sep 16 2026
 upgrade fpd auto
 version 15.2
@@ -90,11 +90,29 @@ ipv6 cef
 !
 multilink bundle-name authenticated
 !
+!
+!
+!
+!
+!
+!
+!
+!
+!
 redundancy
 !
 !
 ip tcp synwait-time 5
 ! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
 interface FastEthernet0/0
  description Link para R1
  ip address 192.168.100.2 255.255.255.252
