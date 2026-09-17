@@ -2,6 +2,17 @@
 
 Advanced GNS3 networking lab that models an IPv4/IPv6 service-provider core and a customer MPLS L3VPN. The topology combines multi-area OSPF, iBGP/eBGP, a route reflector, MPLS/LDP, VPNv4, a VRF, and QoS.
 
+<div align="center">
+
+![Status](https://img.shields.io/badge/Status-Completed-brightgreen?style=flat&logo=github)
+![GNS3](https://img.shields.io/badge/GNS3-Network%20Simulation-4B6B94?style=flat)
+![Service](https://img.shields.io/badge/Service-MPLS%20L3VPN-red?style=flat)
+![Vendor](https://img.shields.io/badge/Cisco-IOS%2015.2-1BA0D7?style=flat&logo=cisco&logoColor=white)
+![Protocols](https://img.shields.io/badge/Protocols-MP--BGP%20%7C%20OSPF%20%7C%20LDP-orange?style=flat)
+![License](https://img.shields.io/badge/License-MIT-007EC6?style=flat)
+
+</div>
+
 > **Lab status:** the repository includes corrected startup configurations and static validation artifacts. Start the topology in GNS3 and run the verification commands below to confirm live adjacencies and end-to-end forwarding in your environment.
 
 ## Topology
